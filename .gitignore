@@ -46,3 +46,4 @@ sampleDB*
 
 # jenv
 .java-version
+**/lib/*.jar
