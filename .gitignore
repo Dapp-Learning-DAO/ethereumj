@@ -42,6 +42,7 @@ sampleDB*
 **/test-user.conf
 **/out.log
 **/user.log4j.properties
+**/solcJ-all-0.4.25.jar
 
 # jenv
 .java-version
