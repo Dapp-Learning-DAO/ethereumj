@@ -17,15 +17,26 @@
  */
 package org.ethereum;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.ethereum.cli.CLIInterface;
 import org.ethereum.config.SystemProperties;
+import org.ethereum.core.Transaction;
+import org.ethereum.crypto.ECKey;
+import org.ethereum.db.ByteArrayWrapper;
+import org.ethereum.facade.Ethereum;
 import org.ethereum.mine.Ethash;
+import org.ethereum.util.ByteUtil;
+import org.spongycastle.util.encoders.Hex;
 
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +59,34 @@ public class Start {
         getEthashBlockNumber().ifPresent(blockNumber -> createDagFileAndExit(config, blockNumber));
         getBlocksDumpPath(config).ifPresent(dumpPath -> loadDumpAndExit(config, dumpPath));
 
-        createEthereum();
+        Ethereum ethereum = createEthereum();
+      //  ethereum.getBlockMiner().startMining();
+
+        // Schedule task to send transaction
+        if (args.length > 0) {
+            try {
+                //0x627306090abaB3A6e1400e9345bC60c78a8BEf57
+                // Define accounts and amount
+                ECKey senderKey = ECKey.fromPrivate(Hex.decode("c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"));
+                byte[] receiverAddr = Hex.decode("31e2e1ed11951c7091dfba62cd4b7145e947219c");
+
+                for (int i = ethereum.getRepository().getNonce(senderKey.getAddress()).intValue(), j = 0; j < 20000; i++, j++) {
+
+                    Transaction tx = new Transaction(ByteUtil.intToBytesNoLeadZeroes(i),
+                            ByteUtil.longToBytesNoLeadZeroes(50_000_000_000L), ByteUtil.longToBytesNoLeadZeroes(0xfffff),
+                            receiverAddr, new byte[]{77}, new byte[0]);
+                    tx.sign(senderKey);
+                  //  System.out.println("=== Submitting tx: " + tx);
+                    ethereum.submitTransaction(tx);
+
+
+                    Thread.sleep(5000);
+                }
+                System.out.println("Transaction sent from " + senderKey.getAddress());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void disableSync(SystemProperties config) {

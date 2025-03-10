@@ -64,6 +64,9 @@ public class TrieNodeSourceTest {
         byte[] addr1 = Hex.decode("5c543e7ae0a1104f78406c340e9c64fd9fce5170");
         byte[] addr2 = Hex.decode("8bccc9ba2e5706e24a36dda02ca2a846e39a7bbf");
 
+
+        //0e42f327ee3cfa7ccfc084a0bb68d05eb627610303012a67afbf1ecd9b0d32fa
+        //000000000000000000000000000000000000000000000000000076616c756531
         byte[] k1 = HashUtil.sha3("key1".getBytes()), v1 = "value1".getBytes();
 
         assertNull(trieNodeSource.get(Hex.decode("4b7fc4d98630bae2133ad002f743124f2ef5d8167f094af0c2b82d3476604055")));

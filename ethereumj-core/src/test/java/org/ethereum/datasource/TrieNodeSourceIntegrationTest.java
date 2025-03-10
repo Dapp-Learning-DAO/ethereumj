@@ -51,7 +51,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 @NoAutoscan
-@Ignore
+//@Ignore
 public class TrieNodeSourceIntegrationTest {
 
     @Autowired @Qualifier("trieNodeSource")

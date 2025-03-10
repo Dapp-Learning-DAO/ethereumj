@@ -98,6 +98,7 @@ public class Miner {
 
         while (ByteUtil.increment(testNonce) && !stop) {
 
+            System.out.println("mining: " + new BigInteger(1, testNonce));
             if (testNonce[31] == 0 && testNonce[30] == 0) {
                 System.out.println("mining: " + new BigInteger(1, testNonce));
             }
@@ -107,6 +108,7 @@ public class Miner {
             concat = Arrays.concatenate(hash, testNonce);
             byte[] result = sha3(concat);
             if (FastByteComparisons.compareTo(result, 0, 32, target, 0, 32) < 0) {
+                System.out.println("mining success: " + new BigInteger(1, testNonce));
                 newBlock.setNonce(testNonce);
                 return true;
             }

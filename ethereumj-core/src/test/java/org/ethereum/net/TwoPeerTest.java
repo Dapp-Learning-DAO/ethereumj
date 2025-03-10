@@ -52,7 +52,7 @@ import static org.ethereum.crypto.HashUtil.sha3;
 /**
  * Created by Anton Nashatyrev on 13.10.2015.
  */
-@Ignore
+//@Ignore
 public class TwoPeerTest {
 
     @Configuration

@@ -386,7 +386,7 @@ public class VMCustomTest {
         program =
                 new Program(Hex.decode("6102016000526002601E20"), invoke);
         String s_expected_1 = "114A3FE82A0219FCC31ABD15617966A125F12B0FD3409105FC83B487A9D82DE4";
-
+   // sha3(0x0201)
         vm.step(program);
         vm.step(program);
         vm.step(program);
